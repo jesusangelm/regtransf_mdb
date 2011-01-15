@@ -12,7 +12,7 @@
 from mongoengine import *
 from datetime import *
 from time import *
-from bson.code import Code
+
 
 class Rsubida(Document):
     subida = FloatField()
