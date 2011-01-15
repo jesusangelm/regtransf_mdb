@@ -28,8 +28,13 @@ print "Conectando a la Base de datos en la instancia Local"
 #Conectando a la instancia MongoDB local en la base de datos "bdregistrotransgerenciamdb"
 connect("bdregistrotransgerenciamdb")
 
-la_subida = float(raw_input('Introdusca la cantidad de datos Enviados: '))
-la_bajada = float(raw_input('Introdusca la cantidad de datos Recibidos: '))
+while True:
+    try:
+        la_subida = float(raw_input('Introdusca la cantidad de datos Enviados: '))
+        la_bajada = float(raw_input('Introdusca la cantidad de datos Recibidos: '))
+        break
+    except ValueError:
+        print "Solo se permiten numeros... Intente nuevamente."
 
 fecha = date.today()
 fechaagregado = fecha.strftime("%d-%m-%y")
