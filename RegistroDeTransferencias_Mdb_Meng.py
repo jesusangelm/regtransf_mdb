@@ -9,9 +9,12 @@
 # los datos de subida-bajada consumidos en internet.                     #
 ##########################################################################
 
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 from mongoengine import *
 from datetime import *
 from time import *
+
 
 
 class Rsubida(Document):
@@ -23,60 +26,70 @@ class Rbajada(Document):
     bajada = FloatField()
     fecha_agregado = StringField()
     hora_agregado = StringField()
-    
-print "Conectando a la Base de datos en la instancia Local"
-#Conectando a la instancia MongoDB local en la base de datos "bdregistrotransgerenciamdb"
-connect("bdregistrotransgerenciamdb")
-
-while True:
-    try:
-        la_subida = float(raw_input('Introdusca la cantidad de datos Enviados: '))
-        la_bajada = float(raw_input('Introdusca la cantidad de datos Recibidos: '))
-        break
-    except ValueError:
-        print "Solo se permiten numeros... Intente nuevamente."
-
-fecha = date.today()
-fechaagregado = fecha.strftime("%d-%m-%y")
-horaagregado = strftime("%I:%M %p")
-
-print "Los datos ingresados son:"
-print "Subida: " + str(la_subida)
-print "Bajada: " + str(la_bajada)
-print "Fecha Agregado " + fechaagregado
-print "Hora Agregado " + horaagregado
-
-respuesta = raw_input("Estos datos son correctos? introdusca solo (s/n): ")
-
-if respuesta == "s":
-    regsubida = Rsubida(subida = la_subida, fecha_agregado = fechaagregado, hora_agregado = horaagregado)
-    regbajada = Rbajada(bajada = la_bajada, fecha_agregado = fechaagregado, hora_agregado = horaagregado)
-
-    regsubida.save()
-    regbajada.save()
-    print "Registros de Subida y Bajada ALMACENADOS con Exito!"
 
 
-else:
-    print "Cancelado!!!"
 
+#funcion que imprime una linea en blanco
+def espacio():
+    print
 
-#Algunas consultas
-respuesta = raw_input("Deseas ver algunas consultas? introdusca solo (s/n): ")
+#funcion para convertir bytes a Megabytes
+def bytestomb(b):
+    mb = float(b) / (1024*1024)
+    return mb
 
-if respuesta == "s":
-    #Mostrando todos los registros de bajada en la coleccion
-    for rbajada in Rbajada.objects:
-        print "Bajada: " + str(rbajada.bajada)
-
-    #Sumatoria de todos los registros de bajada :)
+#definiendo la funcion "consultas" con algunas consultas
+def consultas():
+    espacio()
     print "Total datos Bajada: " + str(Rbajada.objects.sum("bajada")) + " MB"
     print "Total datos Subida: " + str(Rsubida.objects.sum("subida")) + " MB"
     tbajada = Rbajada.objects.sum("bajada")
     tsubida = Rsubida.objects.sum("subida")
     total = tbajada + tsubida
     print "Total Consumido: " + str(total) + " MB"
+ 
+ 
+print "Conectando a la Base de datos en la instancia Local"
 
+connect("bdregtransf")
+
+#llamando a la funcion de consulta
+consultas()
+
+###### Codigo que extrae los datos de subida/bajada de la interfaz PPP0 #########
+#Cambie ppp0 por su interfaz a monitorear
+interface= 'ppp0'                                                               
+for line in open('/proc/net/dev', 'r'):                                         
+    if interface in line:                                                       
+        data = line.split('%s:' % interface)[1].split()                         
+        rx_bytes, tx_bytes = (data[0], data[8])                                 
+#################################################################################
+
+la_subida = bytestomb(tx_bytes)
+la_bajada = bytestomb(rx_bytes)
+
+fecha = date.today()
+fechaagregado = fecha.strftime("%d-%m-%y")
+horaagregado = strftime("%I:%M %p")
+
+espacio()
+print "Los datos ingresados son:"
+espacio()
+print "Subida: " + str(la_subida) + " MB"
+print "Bajada: " + str(la_bajada) + " MB"
+print "Fecha Agregado " + fechaagregado
+print "Hora Agregado " + horaagregado
+
+espacio()
+respuesta = raw_input("Deseas anadir este registro? introdusca solo (s/n): ")
+if respuesta == "s":
+
+    regsubida = Rsubida(subida = la_subida, fecha_agregado = fechaagregado, hora_agregado = horaagregado)
+    regbajada = Rbajada(bajada = la_bajada, fecha_agregado = fechaagregado, hora_agregado = horaagregado)
+
+    regsubida.save()
+    regbajada.save()
+    print "Registros de Subida y Bajada ALMACENADOS con Exito!"
+    consultas()
 else:
-    print "Cancelado!"
-
+    print "Cancelado!!!"
