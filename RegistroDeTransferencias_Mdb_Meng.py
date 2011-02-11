@@ -1,4 +1,5 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 ##########################################################################
 #Autor: Jesus Marin                                                      #
@@ -9,8 +10,7 @@
 # los datos de subida-bajada consumidos en internet.                     #
 ##########################################################################
 
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+
 from mongoengine import *
 from datetime import *
 from time import *
