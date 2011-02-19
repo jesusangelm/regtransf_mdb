@@ -1,15 +1,14 @@
 RegistroDeTransferencias_Mdb_Meng.
 
 RegistroDeTransferencias_Mdb_Meng: 
-    Es Sencilla aplicacion de consola para llevar un registro de los datos de
+    Es una sencilla aplicación de consola para llevar un registro de los datos de
     subida-bajada consumidos en internet, los cuales se almacenan en una instancia MongoDB. Esta instancia puede ser
     tanto local como remota.
     
     No soy un experto programando y apenas estoy comenzando a aprender a programar en Python y usar MongoDB
-    por lo que RegistroDeTransferencias_Mdb_Meng es extremadamente basico y puede que muchos lo encuentren
-    extremadamente sencillo y carente de caracteristicas o mal programado, pero lo publico y comparto tan
-    solo para aquellas personas que lo encuentren util, le encuentren una utilidad o les paresca interesante
-    y quieran ayudarme a mejorarlo un poco.
+    por lo que RegistroDeTransferencias_Mdb_Meng es extremadamente básico y puede que muchos lo encuentren
+    extremadamente sencillo y carente de características o mal programado, pero lo publico y comparto tan
+    solo para aquellas personas que lo encuentren útil, le encuentren una utilidad o les parezca interesante.
 
 Requisitos:
     RegistroDeTransferencias_Mdb_Meng usa el Driver Python PyMongo para conectarse a una instancia MongoDB
@@ -23,16 +22,11 @@ Requisitos:
         Tan solo teclea en la terminal:
         $ easy_install mongoengine
         Nota: Al instalar MongoEngine este puede reconocer si tienes o no instalado el driver PyMongo, por lo que
-        si no tienes instalado PyMongo e instalas MongoEngine te instalara automaticamente el driver PyMongo.
+        si no tienes instalado PyMongo e instalas MongoEngine te instalara automáticamente el driver PyMongo.
         
 Uso:
-    Para ejecutar la aplicacion tan solo abre una termina, dirigete a la carpeta donde se encuentra
+    Para ejecutar la aplicación tan solo abre una termina, ve a la carpeta donde se encuentra
     RegistroDeTransferencias_Mdb_Meng.py y escribe en la terminal:
         $ python RegistroDeTransferencias_Mdb_Meng.py
         
     
-Funciones Futuras:
-    Una de las caracteristicas que mas me gustaria agregar es que RegistroDeTransferencias_Mdb_Meng tome los valores
-    de subida y bajada directamente de la PC y no se tenga que escribir, pero como dije antes estoy aprendiendo a
-    programar en Python y todavia no e hallado la manera de tomar estos datos de la PC para luego almacenarlos.
-    Imagino no debe ser nada del otro mundo hacerlo pero como soy novato en esto, simplemente no se como hacerlo.
