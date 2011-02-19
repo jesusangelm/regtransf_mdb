@@ -29,16 +29,16 @@ class Rbajada(Document):
 
 
 
-#funcion que imprime una linea en blanco
+
 def espacio():
     print
 
-#funcion para convertir bytes a Megabytes
+
+
 def bytestomb(b):
     mb = float(b) / (1024*1024)
     return mb
 
-#definiendo la funcion "consultas" con algunas consultas
 def consultas():
     espacio()
     print "Total datos Bajada: " + str(Rbajada.objects.sum("bajada")) + " MB"
@@ -51,22 +51,42 @@ def consultas():
  
 print "Conectando a la Base de datos en la instancia Local"
 
+
 connect("bdregtransf")
 
 #llamando a la funcion de consulta
 consultas()
 
+try:
+        
 ###### Codigo que extrae los datos de subida/bajada de la interfaz PPP0 #########
-#Cambie ppp0 por su interfaz a monitorear
-interface= 'ppp0'                                                               
-for line in open('/proc/net/dev', 'r'):                                         
-    if interface in line:                                                       
-        data = line.split('%s:' % interface)[1].split()                         
-        rx_bytes, tx_bytes = (data[0], data[8])                                 
-#################################################################################
+# Cambie ppp0 por su interfaz de red                                                                    #
+    interface= 'ppp0'                                                                                              #
+    for line in open('/proc/net/dev', 'r'):                                                                     #
+        if interface in line:                                                                                         #
+            data = line.split('%s:' % interface)[1].split()                                                 #
+            rx_bytes, tx_bytes = (data[0], data[8])                                                        #
+                                                                                                                           #
+    la_subida = bytestomb(tx_bytes)                                                                        #
+    la_bajada = bytestomb(rx_bytes)                                                                        #
+#######################################################################
+except Exception:
+    print "ERROR al leer interfaz " + interface + ", añada el registro manualmente"
+    respuesta = raw_input("introdusca (s) para Continuar: ")
 
-la_subida = bytestomb(tx_bytes)
-la_bajada = bytestomb(rx_bytes)
+    if respuesta == "s":
+
+        while True:
+            try:
+                la_subidae = float(raw_input('Introdusca la cantidad de datos Enviados: '))
+                la_bajadae = float(raw_input('Introdusca la cantidad de datos Recibidos: '))
+                break
+            except ValueError:
+                print "Solo se permiten numeros... Intente nuevamente."
+
+    la_subida = la_subidae
+    la_bajada = la_bajadae
+
 
 fecha = date.today()
 fechaagregado = fecha.strftime("%d-%m-%y")
@@ -81,7 +101,7 @@ print "Fecha Agregado " + fechaagregado
 print "Hora Agregado " + horaagregado
 
 espacio()
-respuesta = raw_input("Deseas anadir este registro? introdusca solo (s/n): ")
+respuesta = raw_input("¿Deseas anadir este registro? introdusca solo (s/n): ")
 if respuesta == "s":
 
     regsubida = Rsubida(subida = la_subida, fecha_agregado = fechaagregado, hora_agregado = horaagregado)
