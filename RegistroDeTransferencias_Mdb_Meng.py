@@ -60,15 +60,15 @@ consultas()
 try:
         
 ###### Codigo que extrae los datos de subida/bajada de la interfaz PPP0 #########
-# Cambie ppp0 por su interfaz de red                                                                    #
-    interface= 'ppp0'                                                                                              #
-    for line in open('/proc/net/dev', 'r'):                                                                     #
-        if interface in line:                                                                                         #
-            data = line.split('%s:' % interface)[1].split()                                                 #
-            rx_bytes, tx_bytes = (data[0], data[8])                                                        #
-                                                                                                                           #
-    la_subida = bytestomb(tx_bytes)                                                                        #
-    la_bajada = bytestomb(rx_bytes)                                                                        #
+# Cambie ppp0 por su interfaz de red                                                                    
+    interface= 'ppp0'                                                                                              
+    for line in open('/proc/net/dev', 'r'):                                                                     
+        if interface in line:                                                                                         
+            data = line.split('%s:' % interface)[1].split()                                                 
+            rx_bytes, tx_bytes = (data[0], data[8])                                                        
+                                                                                                                           
+    la_subida = bytestomb(tx_bytes)                                                                        
+    la_bajada = bytestomb(rx_bytes)                                                                        
 #######################################################################
 except Exception:
     print "ERROR al leer interfaz " + interface + ", añada el registro manualmente"
